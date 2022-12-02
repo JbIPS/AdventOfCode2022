@@ -1,3 +1,4 @@
+
 const Fs = require('fs')
 
 const POINTS = {
