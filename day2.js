@@ -1,5 +1,4 @@
 const fs = require("fs/promises");
-const { deflateRaw } = require("zlib");
 
 async function startFirstPart() {
 	const file = await fs.readFile("day2_input.txt", { encoding: "utf8" });
