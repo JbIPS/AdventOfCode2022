@@ -36,12 +36,7 @@ async function main() {
   const [crateSection, commandsSection] = input.split('\n\n')
   const crates = parseCrateSection(crateSection)
   const commands = parseCommandsSection(commandsSection)
-
-  console.log(crates)
-  console.log(commands)
-
   commands.forEach(([n, from, to]) => moveCrates(crates, n, from - 1, to - 1))
-
   console.log(crates.map((c) => c[0]).join(''))
 }
 
