@@ -1,13 +1,13 @@
 const fs = require("fs/promises");
 
-async function startFirstPart() {
+async function start() {
 	const file = await fs.readFile("day7_input.txt", { encoding: "utf8" });
 
 	const directories = [{ name: "/", value: 0 }];
 	let currentDirectory = 0;
 
 	file.split("\n").forEach((line) => {
-		const command = line.split(" ");
+		let command = line.split(" ");
 
 		if (command[0] === "$" && command[1] === "cd" && command[2] !== "/") {
 			if (command[2] === "..") {
@@ -16,7 +16,9 @@ async function startFirstPart() {
 				}
 			} else
 				currentDirectory = directories.findIndex(
-					(directory) => directory.name === command[2]
+					(directory) =>
+						directory.name === command[2] &&
+						directory.parentIndex === currentDirectory
 				);
 		} else if (command[0] === "dir") {
 			directories.push({
@@ -36,12 +38,19 @@ async function startFirstPart() {
 		}
 	});
 
-	let valuesAtMost = 0;
+	let firstAnswer = 0;
 
 	directories.forEach((dir) => {
-		valuesAtMost += dir.value > 100000 ? 0 : dir.value;
+		firstAnswer += dir.value > 100000 ? 0 : dir.value;
 	});
 
-	console.log(valuesAtMost);
+	const spaceNeeded = 30000000 - (70000000 - directories[0].value);
+
+	let secondAnswer = directories
+		.sort((a, b) => a.value - b.value)
+		.find((dir) => dir.value > spaceNeeded);
+
+	console.log(firstAnswer);
+	console.log(secondAnswer);
 }
-startFirstPart();
+start();
