@@ -26,3 +26,5 @@ export interface Tree<T> {
   parent: Tree<T> | null
   value?: T
 }
+
+export type FsTree = Tree<{ name: string; size: number }>
