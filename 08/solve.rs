@@ -172,9 +172,6 @@ fn count_visible(map: &Map) -> usize {
 }
 
 // --------------- Round 2 ---------------------
-
-// The commented code should return the same result that the "non commented" code.
-// But it doesn't. Don't know why ?????
 fn get_scenery(tree_height: u8, line_of_trees: PointOfView<'_>) -> usize {
     let mut count = 0;
     for h in line_of_trees {
@@ -184,12 +181,6 @@ fn get_scenery(tree_height: u8, line_of_trees: PointOfView<'_>) -> usize {
         }
     }
     count
-    /* line_of_trees.is_on_border() {
-        0
-    } else {
-        // Plus one because we need to count the tree that ends our beautiful scenery
-        line_of_trees.take_while(|h| *h < tree_height).count() + 1
-    }*/
 }
 
 fn get_scenery_in_map(map: &Map, coord: Coord) -> usize {
