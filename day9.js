@@ -33,16 +33,16 @@ async function start() {
 
 		for (let i = 0; i < value; i++) {
 			if (direction === "U") {
-				++head.y;
+				head.y++;
 			}
 			if (direction === "D") {
-				--head.y;
+				head.y--;
 			}
 			if (direction === "R") {
-				++head.x;
+				head.x++;
 			}
 			if (direction === "L") {
-				--head.x;
+				head.x--;
 			}
 			followPosition(tail, head);
 			if (
@@ -103,16 +103,16 @@ async function startPartTwo() {
 
 		for (let i = 0; i < value; i++) {
 			if (direction === "U") {
-				++head.y;
+				head.y++;
 			}
 			if (direction === "D") {
-				--head.y;
+				head.y--;
 			}
 			if (direction === "R") {
-				++head.x;
+				head.x++;
 			}
 			if (direction === "L") {
-				--head.x;
+				head.x--;
 			}
 
 			knots.forEach((knot, ind, knots) => {
