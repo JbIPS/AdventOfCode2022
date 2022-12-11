@@ -32,22 +32,21 @@ async function start() {
 				} = monkey;
 
 				const operatedItems = items.map((item) => {
-					let modItem = item % monkeyModulo;
 					monkeys[monkeyValue].incrementalCount++;
-					const val = parseInt(operation[1]) ? parseInt(operation[1]) : modItem;
+					const val = parseInt(operation[1]) ? parseInt(operation[1]) : item;
 					switch (operation[0]) {
 						case "+":
 							return relief
-								? Math.floor((modItem += val) / relief)
-								: (modItem += val);
+								? Math.floor((item += val) / relief)
+								: (item += val) % monkeyModulo;
 						case "-":
 							return relief
-								? Math.floor((modItem -= val) / relief)
-								: (modItem -= val);
+								? Math.floor((item -= val) / relief)
+								: (item -= val) % monkeyModulo;
 						case "*":
 							return relief
-								? Math.floor((modItem *= val) / relief)
-								: (modItem *= val);
+								? Math.floor((item *= val) / relief)
+								: (item *= val) % monkeyModulo;
 					}
 				});
 
