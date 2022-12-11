@@ -37,11 +37,17 @@ async function start() {
 					const val = parseInt(operation[1]) ? parseInt(operation[1]) : modItem;
 					switch (operation[0]) {
 						case "+":
-							return Math.floor((modItem += val) / relief);
+							return relief
+								? Math.floor((modItem += val) / relief)
+								: (modItem += val);
 						case "-":
-							return Math.floor((modItem -= val) / relief);
+							return relief
+								? Math.floor((modItem -= val) / relief)
+								: (modItem -= val);
 						case "*":
-							return Math.floor((modItem *= val) / relief);
+							return relief
+								? Math.floor((modItem *= val) / relief)
+								: (modItem *= val);
 					}
 				});
 
@@ -59,6 +65,6 @@ async function start() {
 		return monkeys[0].incrementalCount * monkeys[1].incrementalCount;
 	};
 	console.log("First part : " + monkeyBusiness(monkeysInput, 20, 3));
-	console.log("Second part : " + monkeyBusiness(monkeysInput, 10000, 1));
+	console.log("Second part : " + monkeyBusiness(monkeysInput, 10000));
 }
 start();
