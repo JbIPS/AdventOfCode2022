@@ -2,6 +2,7 @@
 
 from enum import Enum
 from time import sleep
+from math import sqrt
 
 def yield_input():
     import sys
@@ -112,26 +113,42 @@ class Map:
         if coord[1] < self.nb_columns-1:
             yield from getattr(cell, attr)(self.get(move_right(coord)))
 
-    def flood_map(self, start, check, direction):
+    def flood_map(self, start, scoring, check, direction):
         to_see = [self.get(start)]
         round = 0
         while True:
-            next_to_see = []
-            for cell in to_see:
-                if check(cell):
-                    return cell.path_length, round
-                cell.seen = Seen.SEEN
-                next_to_see.extend(self.see_arround(cell, direction))
-                round += 1
-                self.print(round)
-                sleep(0.005)
-            to_see = next_to_see
+            cell, to_see = to_see[0], to_see[1:]
+            if check(cell):
+                return cell.path_length, round
+            cell.seen = Seen.SEEN
+            to_see.extend(self.see_arround(cell, direction))
+            to_see.sort(key=scoring)
+            round += 1
+            self.print(round)
+            sleep(0.005)
 
     def find_a_way_to_summit(self):
-        return self.flood_map(self.start, lambda cell: cell.coord == self.end, "up")
+        # Scoring is important.
+        # A* found quickly A solution, but it may not the best one.
+
+        # This scoring is fast but not exact:
+        # Result:422, round:1460
+        scoring = lambda c: c.path_length + abs(c.coord[0]-self.end[0])**2 + abs(c.coord[1]-self.end[1])**2
+
+        # This scoring give more importance to path_length and give the good result
+        # Result:412, round:3722
+        scoring = lambda c: c.path_length + sqrt(abs(c.coord[0]-self.end[0])**2 + abs(c.coord[1]-self.end[1])**2)
+        return self.flood_map(self.start, scoring, lambda cell: cell.coord == self.end, "up")
 
     def find_shorter_path_to_summit(self):
-        return self.flood_map(self.end, lambda cell: cell.height == 0, "down")
+        # This scoring is fast but not exact:
+        #Result:410, round: 2276
+        scoring = lambda c: c.height
+
+        # This scoring give more importance to path_length and give the good result
+        # Result:402, round:2400
+        scoring = lambda c: c.path_length + c.height
+        return self.flood_map(self.end, scoring, lambda cell: cell.height == 0, "down")
 
     def print(self, round):
         global current_color
@@ -156,8 +173,8 @@ def main():
     result_1 = round1(map)
     map.clear()
     result_2 = round2(map)
-    print("Round 1 :", result_1) # 412, 3745
-    print("Round 2 :", result_2) # 402, 2430
+    print("Round 1 :", result_1)
+    print("Round 2 :", result_2)
     print(map.nb_lines, map.nb_columns)
 
 
